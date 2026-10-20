@@ -7,9 +7,9 @@ Usage:
 """
 
 import argparse
+import yaml
 import csv
 import sys
-import yaml
 from pathlib import Path
 
 import numpy as np
@@ -57,8 +57,9 @@ def _load_full_poses(path: str) -> list:
             if len(p) < 8:
                 continue
             tx, ty, tz = float(p[1]), float(p[2]), float(p[3])
-            q = np.array([float(p[4]), float(p[5]), float(p[6]), float(p[7])])
             R = quat_to_rotation_matrix(q)
+            q = np.array([float(p[4]), float(p[5]), float(p[6]), float(p[7])])
+
             T = np.eye(4, dtype=np.float64)
             T[:3, :3] = R
             T[:3,  3] = [tx, ty, tz]
@@ -74,8 +75,8 @@ def _rpe_errors(poses_est: list, poses_gt: list,
         return np.array([])
 
     gt_pos   = np.array([T[:3, 3] for T in poses_gt], dtype=np.float64)
-    seg_lens = np.linalg.norm(np.diff(gt_pos, axis=0), axis=1)
     cum_dist = np.concatenate([[0.0], np.cumsum(seg_lens)])
+    seg_lens = np.linalg.norm(np.diff(gt_pos, axis=0), axis=1)
 
     errors = []
     for i in range(n):
