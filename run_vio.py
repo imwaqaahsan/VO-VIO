@@ -14,9 +14,9 @@ import time
 import traceback
 
 import cv2
+import matplotlib
 import numpy as np
 import yaml
-import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from pathlib import Path
@@ -25,9 +25,9 @@ np.random.seed(0)
 
 from src.utils.tum_vi_loader        import TUMVIDataset
 from src.utils.trajectory_io        import save_tum_trajectory
+from src.frontend.epipolar          import EpipolarGeometry
 from src.frontend.feature_detector  import FeatureDetector
 from src.frontend.feature_tracker   import FeatureTracker
-from src.frontend.epipolar          import EpipolarGeometry
 from src.backend.pnp_solver         import PnPSolver
 # from src.backend.bundle_adjustment  import MotionOnlyBA
 from src.backend.imu_preintegration import IMUPreintegration, Exp
@@ -150,8 +150,8 @@ def _prop_imu(T_wb_kf:  np.ndarray,
     p_w_new  = p_w + v_kf * dt + 0.5 * gravity * dt ** 2 + R_wb @ p.delta_p
 
     T_wb_new = np.eye(4, dtype=np.float64)
-    T_wb_new[:3, :3] = R_wb_new
     T_wb_new[:3,  3] = p_w_new
+    T_wb_new[:3, :3] = R_wb_new
     return T_wb_new, v_new
 
 
