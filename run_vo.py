@@ -8,8 +8,8 @@ import traceback
 
 import cv2
 import numpy as np
-import yaml
 import matplotlib
+import yaml
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from pathlib import Path
@@ -20,8 +20,8 @@ from src.utils.tum_vi_loader  import TUMVIDataset
 from src.utils.trajectory_io  import save_tum_trajectory
 from src.frontend.feature_detector import FeatureDetector
 from src.frontend.feature_tracker  import FeatureTracker
-from src.frontend.epipolar         import EpipolarGeometry
 from src.backend.pnp_solver        import PnPSolver
+from src.frontend.epipolar         import EpipolarGeometry
 from src.backend.bundle_adjustment import MotionOnlyBA
 
 
